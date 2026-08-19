@@ -31,9 +31,7 @@ public class Program
 
     public static void ConsultarProdutoPorCodigo()
     {
-        bool produtoEncontrado = false;
-
-        while(true)
+        while (true)
         {
             Console.Write("\nDigite o código do produto desejado: ");
 
@@ -44,114 +42,132 @@ public class Program
                 Console.WriteLine("O código digitado é inválido!");
             }
 
-            foreach (var item in produtos)
+            Produto? produto = produtos.Find(prod => prod.Codigo == codigo);
+
+            if (produto != null)
             {
-                if (item.Codigo == codigo)
-                {
-                    Console.WriteLine($"Código: {item.Codigo}");
-                    Console.WriteLine($"Descrição: {item.Descricao}");
-                    Console.WriteLine($"Preço: {item.Preco}");
-                    Console.WriteLine($"Estoque: {item.Estoque}");
-                    Console.WriteLine($"Ativo: {item.Ativo}");
-                    produtoEncontrado = true;
-                    break;
-                }
+                Console.WriteLine($"Código: {produto.Codigo}");
+                Console.WriteLine($"Descrição: {produto.Descricao}");
+                Console.WriteLine($"Preço: {produto.Preco}");
+                Console.WriteLine($"Estoque: {produto.Estoque}");
+                Console.WriteLine($"Ativo: {produto.Ativo}");
             }
-            if (!produtoEncontrado)
+            else
             {
                 Console.WriteLine("Produto não encontrado.\n");
             }
-            
+            break;
         }
     }
 
     public static void AlterarProduto()
     {
-        Produto produto = new Produto();
         string? linha;
-        bool lerCampos = true;
 
-        Console.WriteLine("=== Alterar Produto ===");
-        Console.Write("Digite o código do produto que deseja alterar: ");
-        linha = Console.ReadLine();
-
-        while (lerCampos)
+        while (true)
         {
-            if (!int.TryParse(linha, out int codigo))
+            Console.Write("\nDigite o código do produto desejado: ");
+
+            string? codigoDigitado = Console.ReadLine();
+
+            if (!int.TryParse(codigoDigitado, out int codigo))
             {
                 Console.WriteLine("O código digitado é inválido!");
             }
 
-            produto = produtos.Find(prod => prod.Codigo == codigo);
+            Produto? produto = produtos.Find(prod => prod.Codigo == codigo);
 
-            if (produto.Descricao == null)
+            if (produto != null)
             {
-                Console.Write("Descrição: ");
-                produto.Descricao = Console.ReadLine();
-            }
-
-
-            if (produto.Preco == null)
-            {
-                Console.Write("Preço: ");
-                linha = Console.ReadLine();
-                if (!decimal.TryParse(linha, out decimal preco))
+                while (true)
                 {
-                    Console.WriteLine("O valor informado é inválido!");
-                    continue;
+                    Console.Write("Descrição: ");
+                    string? descricao = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(descricao))
+                    {
+                        Console.WriteLine("A descrição não pode ser vazia!");
+                        continue;
+                    }
+
+                    produto.Descricao = descricao;
+                    break;
                 }
 
-                if (preco < 0)
+
+                while (true)
                 {
-                    Console.WriteLine("O preço informado não pode ser negativo!");
-                    continue;
+                    Console.Write("Preço: ");
+                    linha = Console.ReadLine();
+
+                    if (!decimal.TryParse(linha, out decimal preco))
+                    {
+                        Console.WriteLine("O valor informado é inválido!");
+                        continue;
+                    }
+
+                    if (preco < 0)
+                    {
+                        Console.WriteLine("O preço informado não pode ser negativo!");
+                        continue;
+                    }
+
+                    produto.Preco = preco;
+                    break;
+
                 }
 
-                produto.Preco = preco;
+                while (true)
+                {
+                    Console.Write("Estoque: ");
+                    linha = Console.ReadLine();
+                    if (!int.TryParse(linha, out int estoque))
+                    {
+                        Console.WriteLine("O valor informado é inválido!");
+                        continue;
+                    }
 
+                    if (estoque < 0)
+                    {
+                        Console.WriteLine("A quantidade de estoque informada não pode ser negativa!");
+                        continue;
+                    }
+                    produto.Estoque = estoque;
+                    break;
+                }
+
+                while (true)
+                {
+                    Console.Write("Ativo (true/false): ");
+                    linha = Console.ReadLine();
+                    if (!bool.TryParse(linha, out bool ativo))
+                    {
+                        Console.WriteLine("O valor informado é inválido!");
+                        continue;
+                    }
+                    produto.Ativo = ativo;
+                    break;
+                }
+                Console.WriteLine($"Código: {produto.Codigo}");
+                Console.WriteLine($"Descrição: {produto.Descricao}");
+                Console.WriteLine($"Preço: {produto.Preco}");
+                Console.WriteLine($"Estoque: {produto.Estoque}");
+                Console.WriteLine($"Ativo: {produto.Ativo}");
             }
-
-            if (produto.Estoque == null)
+            else
             {
-                Console.Write("Estoque: ");
-                linha = Console.ReadLine();
-                if (!int.TryParse(linha, out int estoque))
-                {
-                    Console.WriteLine("O valor informado é inválido!");
-                    continue;
-                }
-
-                if (estoque < 0)
-                {
-                    Console.WriteLine("A quantidade de estoque informada não pode ser negativa!");
-                    continue;
-                }
-
-                produto.Estoque = estoque;
-
+                Console.WriteLine("Produto não encontrado.\n");
             }
-            Console.Write("Ativo (true/false): ");
-            linha = Console.ReadLine();
-            if (!bool.TryParse(linha, out bool ativo))
-            {
-                Console.WriteLine("O valor informado é inválido!");
-                continue;
-            }
-            produto.Ativo = ativo;
 
-            produtos.Remove(produto);
-            produtos.Add(produto);
-
-            lerCampos = false;
+            break;
         }
-
     }
+
     public static void CadastrarProduto()
     {
         Produto produto = new Produto();
 
         string? linha;
-        int codigo;
 
         Console.WriteLine("=== Cadastro de Produto ===");
 
@@ -159,7 +175,7 @@ public class Program
         {
             Console.Write("Código: ");
             linha = Console.ReadLine();
-            if (!int.TryParse(linha, out codigo))
+            if (!int.TryParse(linha, out int codigo))
             {
                 Console.WriteLine("O código digitado é inválido!");
                 continue;
