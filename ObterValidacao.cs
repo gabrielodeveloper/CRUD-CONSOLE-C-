@@ -9,7 +9,7 @@ public class Validacao
     {
         this.produtos = produtos;
     }
-    public int ObterCodigoValido()
+    public int ObterCodigo()
     {
         while (true)
         {
@@ -26,14 +26,6 @@ public class Validacao
                 continue;
             }
 
-            Produto? produtoExistente = produtos.Find(produto => produto.Codigo == codigo);
-
-
-            if (produtoExistente != null)
-            {
-                Console.WriteLine("Este código já está cadastrado.");
-                continue;
-            }
             return codigo;
         }
     }
