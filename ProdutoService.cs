@@ -2,20 +2,31 @@ namespace PrimeiroProjeto;
 
 public class ProdutoService
 {
-    static ProdutoColecao produtos = new ProdutoColecao();
- public static void ConsultarProduto()
+
+    private ProdutoColecao produtos;
+    private Validacao validacao;
+
+    public ProdutoService(ProdutoColecao produtos, Validacao validacao)
     {
-        foreach (var item in produtos)
-        {
-            Console.WriteLine("\n\n===== PRODUTOS CADASTRADOS =====");
-            Console.WriteLine($"Código: {item.Codigo}");
-            Console.WriteLine($"Descrição: {item.Descricao}");
-            Console.WriteLine($"Preço: {item.Preco}");
-            Console.WriteLine($"Estoque: {item.Estoque}");
-            Console.WriteLine($"Ativo: {item.Ativo}");
-        }
+        this.produtos = produtos;
+        this.validacao = validacao;
     }
-        public static void ConsultarProdutoPorCodigo()
+
+    public void ConsultarProduto()
+    {
+        Console.WriteLine("\n\n===== PRODUTOS CADASTRADOS =====");
+
+      
+        produtos.ForEach(produto =>
+        {
+            Console.WriteLine($"Código: {produto.Codigo}");
+            Console.WriteLine($"Descrição: {produto.Descricao}");
+            Console.WriteLine($"Preço: {produto.Preco}");
+            Console.WriteLine($"Estoque: {produto.Estoque}");
+            Console.WriteLine($"Ativo: {produto.Ativo}");
+        });
+    }
+    public void ConsultarProdutoPorCodigo()
     {
         while (true)
         {
@@ -46,7 +57,7 @@ public class ProdutoService
             break;
         }
     }
-        public static void AlterarProduto()
+    public void AlterarProduto()
     {
         while (true)
         {
@@ -64,10 +75,10 @@ public class ProdutoService
 
             if (produto != null)
             {
-                produto.Descricao = ObterValidacao.ObterDescricaoValida();
-                produto.Preco = ObterValidacao.ObterPrecoValido();
-                produto.Estoque = ObterValidacao.ObterEstoqueValido();
-                produto.Ativo = ObterValidacao.ObterAtivoValido();
+                produto.Descricao = validacao.ObterDescricaoValida();
+                produto.Preco = validacao.ObterPrecoValido();
+                produto.Estoque = validacao.ObterEstoqueValido();
+                produto.Ativo = validacao.ObterAtivoValido();
 
                 Console.WriteLine($"Código: {produto.Codigo}");
                 Console.WriteLine($"Descrição: {produto.Descricao}");
@@ -82,21 +93,21 @@ public class ProdutoService
             break;
         }
     }
-        public static void CadastrarProduto()
+    public void CadastrarProduto()
     {
         Produto produto = new Produto();
 
         Console.WriteLine("=== Cadastro de Produto ===");
 
-        produto.Codigo = ObterValidacao.ObterCodigoValido();
-        produto.Descricao = ObterValidacao.ObterDescricaoValida();
-        produto.Preco = ObterValidacao.ObterPrecoValido();
-        produto.Estoque = ObterValidacao.ObterEstoqueValido();
-        produto.Ativo = ObterValidacao.ObterAtivoValido();
+        produto.Codigo = validacao.ObterCodigoValido();
+        produto.Descricao = validacao.ObterDescricaoValida();
+        produto.Preco = validacao.ObterPrecoValido();
+        produto.Estoque = validacao.ObterEstoqueValido();
+        produto.Ativo = validacao.ObterAtivoValido();
         produtos.Add(produto);
     }
 
-        public static void ExcluirProduto()
+    public void ExcluirProduto()
     {
         Console.Write("\nDigite o código do produto que deseja excluir: ");
 

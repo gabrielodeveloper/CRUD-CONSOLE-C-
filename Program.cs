@@ -2,6 +2,7 @@
 
 public class Program
 {
+     static ProdutoColecao produtos = new ProdutoColecao();
     public static void ExibirMenu()
     {
         Console.WriteLine("\n\n=== Escolha qual sua opção!");
@@ -14,6 +15,9 @@ public class Program
     }
     public static void Main(string[] args)
     {
+        Validacao validacao = new Validacao(produtos);
+        ProdutoService service = new ProdutoService(produtos, validacao);
+        
         try
         {
             ExibirMenu();
@@ -24,22 +28,22 @@ public class Program
                 switch (opcao)
                 {
                     case 1:
-                        ProdutoService.CadastrarProduto();
+                        service.CadastrarProduto();
                         break;
 
                     case 2:
-                        ProdutoService.ConsultarProduto();
+                        service.ConsultarProduto();
                         break;
 
                     case 3:
-                        ProdutoService.ConsultarProdutoPorCodigo();
+                        service.ConsultarProdutoPorCodigo();
                         break;
 
                     case 4:
-                        ProdutoService.AlterarProduto();
+                        service.AlterarProduto();
                         break;
                     case 5:
-                        ProdutoService.ExcluirProduto();
+                        service.ExcluirProduto();
                         break;
 
                     default:
