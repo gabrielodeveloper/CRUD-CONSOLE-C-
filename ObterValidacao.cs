@@ -1,8 +1,15 @@
 namespace PrimeiroProjeto;
-public class ObterValidacao
+
+public class Validacao
 {
-    static ProdutoColecao produtos = new ProdutoColecao();
-        public static int ObterCodigoValido()
+
+    private ProdutoColecao produtos;
+
+    public Validacao(ProdutoColecao produtos)
+    {
+        this.produtos = produtos;
+    }
+    public int ObterCodigoValido()
     {
         while (true)
         {
@@ -19,26 +26,19 @@ public class ObterValidacao
                 continue;
             }
 
-            bool codigoExiste = false;
+            Produto? produtoExistente = produtos.Find(produto => produto.Codigo == codigo);
 
-            foreach (var item in produtos)
-            {
-                if (item.Codigo == codigo)
-                {
-                    codigoExiste = true; break;
-                }
-            }
 
-            if (codigoExiste)
+            if (produtoExistente != null)
             {
-                Console.WriteLine("Este código já foi usado. Tente novamente.");
+                Console.WriteLine("Este código já está cadastrado.");
                 continue;
             }
             return codigo;
         }
     }
 
-    public static string ObterDescricaoValida()
+    public string ObterDescricaoValida()
     {
         while (true)
         {
@@ -54,7 +54,7 @@ public class ObterValidacao
         }
     }
 
-    public static decimal ObterPrecoValido()
+    public decimal ObterPrecoValido()
     {
         while (true)
         {
@@ -77,7 +77,7 @@ public class ObterValidacao
         }
     }
 
-    public static int ObterEstoqueValido()
+    public int ObterEstoqueValido()
     {
         while (true)
         {
@@ -99,7 +99,7 @@ public class ObterValidacao
         }
     }
 
-    public static bool ObterAtivoValido()
+    public bool ObterAtivoValido()
     {
         while (true)
         {
