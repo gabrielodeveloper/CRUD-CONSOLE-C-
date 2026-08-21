@@ -2,13 +2,6 @@ namespace PrimeiroProjeto;
 
 public class Validacao
 {
-
-    private ProdutoColecao produtos;
-
-    public Validacao(ProdutoColecao produtos)
-    {
-        this.produtos = produtos;
-    }
     public int ObterCodigo()
     {
         while (true)
