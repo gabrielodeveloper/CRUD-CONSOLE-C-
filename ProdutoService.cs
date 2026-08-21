@@ -48,13 +48,13 @@ public class ProdutoService
         int codigo = validacao.ObterCodigo();
         var produtoEscontrado = ObterProduto(codigo);
 
-        Produto produto = produtoEscontrado[0];
 
         if (!produtoEscontrado.Any())
         {
             Console.WriteLine("Produto não encontrado.");
             return;
         }
+        Produto produto = produtoEscontrado[0];
         ExibirProduto(produto);
     }
     public void AlterarProduto()
@@ -64,13 +64,14 @@ public class ProdutoService
         int codigo = validacao.ObterCodigo();
         var produtoEncontrado = ObterProduto(codigo);
 
-        Produto produto = produtoEncontrado[0];
-
         if (!produtoEncontrado.Any())
         {
             Console.WriteLine("Produto não encontrado.\n");
             return;
         }
+        
+        Produto produto = produtoEncontrado[0];
+
         produto.Descricao = validacao.ObterDescricaoValida();
         produto.Preco = validacao.ObterPrecoValido();
         produto.Estoque = validacao.ObterEstoqueValido();
