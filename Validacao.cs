@@ -44,9 +44,9 @@ public class Validacao
         while (true)
         {
             Console.Write("Preço: ");
-            string? PrecoDigitado = Console.ReadLine();
+            string? precoDigitado = Console.ReadLine();
 
-            if (!decimal.TryParse(PrecoDigitado, out decimal preco))
+            if (!decimal.TryParse(precoDigitado, out decimal preco))
             {
                 Console.WriteLine("O valor informado é inválido!");
                 continue;
