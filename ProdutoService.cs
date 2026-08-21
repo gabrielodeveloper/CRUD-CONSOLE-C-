@@ -5,13 +5,11 @@ public class ProdutoService
 
     private ProdutoColecao produtos;
     private Validacao validacao;
-
     public ProdutoService(ProdutoColecao produtos, Validacao validacao)
     {
         this.produtos = produtos;
         this.validacao = validacao;
     }
-
     public List<Produto> ObterProduto(int? codigo = null)
     {
         if (codigo.HasValue)
@@ -38,7 +36,6 @@ public class ProdutoService
         var produtosEncontrados = ObterProduto();
         Console.WriteLine("\n\n===== PRODUTOS CADASTRADOS =====");
 
-
         foreach (var produto in produtosEncontrados)
         {
             ExibirProduto(produto);
@@ -49,10 +46,11 @@ public class ProdutoService
         Console.WriteLine("\nDigite o código do produto desejado.");
 
         int codigo = validacao.ObterCodigo();
+        var produtoEscontrado = ObterProduto(codigo);
 
-        Produto? produto = produtos.Find(produto => produto.Codigo == codigo);
+        Produto produto = produtoEscontrado[0];
 
-        if (produto == null)
+        if (!produtoEscontrado.Any())
         {
             Console.WriteLine("Produto não encontrado.");
             return;
@@ -61,39 +59,25 @@ public class ProdutoService
     }
     public void AlterarProduto()
     {
-        while (true)
+        Console.Write("\nDigite o código do produto desejado: ");
+
+        int codigo = validacao.ObterCodigo();
+        var produtoEncontrado = ObterProduto(codigo);
+
+        Produto produto = produtoEncontrado[0];
+
+        if (!produtoEncontrado.Any())
         {
-            Console.Write("\nDigite o código do produto desejado: ");
-
-            string? codigoDigitado = Console.ReadLine();
-
-            if (!int.TryParse(codigoDigitado, out int codigo))
-            {
-                Console.WriteLine("O código digitado é inválido!");
-                return;
-            }
-
-            Produto? produto = produtos.Find(prod => prod.Codigo == codigo);
-
-            if (produto != null)
-            {
-                produto.Descricao = validacao.ObterDescricaoValida();
-                produto.Preco = validacao.ObterPrecoValido();
-                produto.Estoque = validacao.ObterEstoqueValido();
-                produto.Ativo = validacao.ObterAtivoValido();
-
-                Console.WriteLine($"Código: {produto.Codigo}");
-                Console.WriteLine($"Descrição: {produto.Descricao}");
-                Console.WriteLine($"Preço: {produto.Preco}");
-                Console.WriteLine($"Estoque: {produto.Estoque}");
-                Console.WriteLine($"Ativo: {produto.Ativo}");
-            }
-            else
-            {
-                Console.WriteLine("Produto não encontrado.\n");
-            }
-            break;
+            Console.WriteLine("Produto não encontrado.\n");
+            return;
         }
+        produto.Descricao = validacao.ObterDescricaoValida();
+        produto.Preco = validacao.ObterPrecoValido();
+        produto.Estoque = validacao.ObterEstoqueValido();
+        produto.Ativo = validacao.ObterAtivoValido();
+
+        ExibirProduto(produto);
+
     }
     public void CadastrarProduto()
     {
@@ -101,7 +85,21 @@ public class ProdutoService
 
         Console.WriteLine("=== Cadastro de Produto ===");
 
-        produto.Codigo = validacao.ObterCodigo();
+        while (true)
+        {
+            int codigo = validacao.ObterCodigo();
+            bool codigoExiste = produtos.Any(produto => produto.Codigo == codigo);
+
+            if (codigoExiste)
+            {
+                Console.WriteLine("Este código já foi usado. Tente novamente.");
+                continue;
+            }
+
+            produto.Codigo = codigo;
+            break;
+        }
+
         produto.Descricao = validacao.ObterDescricaoValida();
         produto.Preco = validacao.ObterPrecoValido();
         produto.Estoque = validacao.ObterEstoqueValido();

@@ -15,7 +15,7 @@ public class Program
     }
     public static void Main(string[] args)
     {
-        Validacao validacao = new Validacao(produtos);
+        Validacao validacao = new Validacao();
         ProdutoService service = new ProdutoService(produtos, validacao);
         
         try
