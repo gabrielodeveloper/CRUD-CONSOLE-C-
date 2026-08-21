@@ -46,15 +46,15 @@ public class ProdutoService
         Console.WriteLine("\nDigite o código do produto desejado.");
 
         int codigo = validacao.ObterCodigo();
-        var produtoEscontrado = ObterProduto(codigo);
+        var produtoEncontrado = ObterProduto(codigo);
 
 
-        if (!produtoEscontrado.Any())
+        if (!produtoEncontrado.Any())
         {
             Console.WriteLine("Produto não encontrado.");
             return;
         }
-        Produto produto = produtoEscontrado[0];
+        Produto produto = produtoEncontrado[0];
         ExibirProduto(produto);
     }
     public void AlterarProduto()
